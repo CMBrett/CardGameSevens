@@ -38,16 +38,18 @@ class Cli(object):
     '''
     classdocs
     '''
-    
-#     def __init__(self):
-#         self.current_input = None
-#         self.instruction = None
-#         self.input = {}
 
-    @staticmethod
+    def __init__(self):
+        print("Initialising CLI class")
+        self.current_input = None
+        self.instruction = None
+        self.input = {}
+
     def create_game(self):
         '''
         '''
+        print("Creating new game via CLI")
+        
         for instr in Instructions.CREATE:
             # Request necessary parameters
             self.instruction = instr

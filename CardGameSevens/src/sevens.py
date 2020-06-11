@@ -1,5 +1,7 @@
+#!/usr/bin/env
+
 import argparse
-from cli.cli_functions import create_game, load_game, list_saved_games
+from cli.cli_functions import Cli
 
 def main():
     '''
@@ -10,10 +12,21 @@ def main():
     parser.add_argument('--list', dest='list', action='store_true', help='lists previously saved games')
     args = parser.parse_args()
 
+    print("Welcome to the Sevens card game!")
+
     # Determine which function to start the game/display save data
     if args.create:
-        create_game()
+        print("Creating game")
+        input = Cli().create_game()
+        print("cli_input: {}".format(input))
+        
     if args.load:
-        load_game()
+        Cli().load_game()
     if args.list:
-        list_saved_games()
+        Cli().list_saved_games()
+
+    
+               
+
+if __name__ == '__main__':
+    main()
