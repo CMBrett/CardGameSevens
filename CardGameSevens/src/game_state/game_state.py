@@ -19,6 +19,7 @@ class GameState(object):
         '''
         # Create Players
         self.players = []
+        self.layouts = []
         self.dealer_id = 0
         self.current_player = 0
         
@@ -34,7 +35,7 @@ class GameState(object):
         # Shuffle deck
         self.game_deck.shuffle()
         
-        # Deal deck to dlayers
+        # Deal deck to players
         self.game_deck.deal()
     
     def process_command(self):
@@ -52,8 +53,6 @@ class GameState(object):
         '''
         '''
         return self.current_player.check_if_winner()
-    
-    
     
     def print_state_to_cli(self):
         '''

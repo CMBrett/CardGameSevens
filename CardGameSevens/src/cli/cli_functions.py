@@ -4,6 +4,8 @@ Created on 11 Jun 2020
 @author: Chris
 '''
 from builtins import int
+from colorama import Fore
+from colorama.initialise import init
 
 class Instructions(object):
     '''
@@ -40,16 +42,14 @@ class Cli(object):
     '''
 
     def __init__(self):
-        print("Initialising CLI class")
         self.current_input = None
         self.instruction = None
         self.input = {}
+        init()
 
     def create_game(self):
         '''
         '''
-        print("Creating new game via CLI")
-        
         for instr in Instructions.CREATE:
             # Request necessary parameters
             self.instruction = instr
@@ -97,3 +97,29 @@ class Cli(object):
         '''
         '''
         self.input[self.instruction] = self.proc_input
+    
+    def info(self, output_str):
+        '''
+        '''
+        init()
+        print(Fore.BLUE + output_str + Fore.RESET)
+    
+    def request_input(self, output_str):
+        '''
+        '''
+        print(Fore.MAGENTA + output_str + Fore.RESET)
+    
+    def warning(self, output_str):
+        '''
+        '''
+        print(Fore.YELLOW + output_str + Fore.RESET)
+        
+    def error(self, output_str):
+        '''
+        '''
+        print(Fore.RED + output_str + Fore.RESET)
+    
+    def notice(self, output_str):
+        '''
+        '''
+        print(output_str)

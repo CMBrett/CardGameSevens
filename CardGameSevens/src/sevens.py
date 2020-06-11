@@ -12,18 +12,16 @@ def main():
     parser.add_argument('--list', dest='list', action='store_true', help='lists previously saved games')
     args = parser.parse_args()
 
-    print("Welcome to the Sevens card game!")
+    cli = Cli()
+    cli.info("Welcome to the Sevens card game!")
 
     # Determine which function to start the game/display save data
     if args.create:
-        print("Creating game")
-        input = Cli().create_game()
-        print("cli_input: {}".format(input))
-        
+        input = cli.create_game()
     if args.load:
-        Cli().load_game()
+        cli.load_game()
     if args.list:
-        Cli().list_saved_games()
+        cli.list_saved_games()
 
     
                
