@@ -4,6 +4,7 @@ Created on 11 Jun 2020
 @author: Chris
 '''
 from game_state.game_state import GameState
+from cli.cli_functions import Cli
 
 
 class GameDriver(object):
@@ -18,21 +19,31 @@ class GameDriver(object):
         '''
         Constructor
         '''
-        self.state = self.INIT
+        self.cli = Cli()
 
     def create(self, deck_num, player_num, human_num, comp_levels):
         '''
         '''
-        # Update GameDriver state
-        self.state = self.CREATING
+        # Request user input for game parameters
+        user_input = self.cli.create_game()
 
         # Create Game State
         self.game = GameState(deck_num, player_num, human_num, comp_levels)
 
-        # Update GameDriver state
-        self.state = self.CREATED
+        # Run the game until a player has won
+        while self.game.check_game_winner() == False:
+            self.run_game()
 
-    def run(self):
+    def run_game(self):
+        '''
+        '''
+        while self.game.check_round_winner() == False:
+                self.run_round()
+        
+        # Start a new round
+        self.game.start_new_round()
+
+    def run_round(self):
         '''
         '''
         # Display current game state in cli output
@@ -44,6 +55,6 @@ class GameDriver(object):
         # Check if this was a winning move
         if self.game.check_winner():
             # TODO: method for ending game
-            print("Player '{}' is the Winner of this Round!".format(self.game.current_player))
+            print("Player '{}' is the Winner!".format(self.game.current_player))
         else:
             self.game.end_turn()

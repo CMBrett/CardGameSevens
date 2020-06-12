@@ -14,8 +14,8 @@ class Command(object):
         '''
         Constructor
         '''
-        self.card = None
-        self.layout = None
+        self.card = card
+        self.layout = layout
     
     def get_user_command(self):
         '''

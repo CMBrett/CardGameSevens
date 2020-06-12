@@ -3,7 +3,7 @@ Created on 9 Jun 2020
 
 @author: Chris
 '''
-from deck.deck import Card, RANKS
+from deck.deck import Card, RANKS, SUITS
 
 class Layout(object):
     '''
@@ -44,3 +44,28 @@ class Layout(object):
         
         if highest_playable_rank in RANKS:
             return Card(highest_playable_rank, self.suit)
+
+class Layouts(object):
+    '''
+    classdocs
+    '''
+
+
+    def __init__(self, deck_num):
+        '''
+        Constructor
+        '''
+        self.layout_amount = deck_num * 4
+        suits = SUITS * deck_num
+        self.layouts = [Layout(suit, i) for i, suit in enumerate(suits)]
+    
+    def get_layout_by_suit(self):
+        '''
+        '''
+        pass
+    
+    def get_layout_by_num(self):
+        '''
+        '''
+        pass
+

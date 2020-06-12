@@ -77,13 +77,13 @@ class Cli(object):
         print(Instructions.INSTRUCTION[self.instruction])
         self.current_input = input()
 
-        if not self.check_valid_input():
+        if not self.check_input_type():
             print("Invalid input: Please enter a value for {} as an integer.")
             self.request_user_input()
         else:
             self.store_user_input()
 
-    def check_valid_input(self):
+    def check_input_type(self):
         '''
         '''
         try:
@@ -92,6 +92,11 @@ class Cli(object):
             return False
         else:
             return True
+    
+    def check_input_value(self):
+        '''
+        '''
+        
     
     def store_user_input(self):
         '''

@@ -17,7 +17,7 @@ def main():
 
     # Determine which function to start the game/display save data
     if args.create:
-        input = cli.create_game()
+        cli.create_game()
     if args.load:
         cli.load_game()
     if args.list:
