@@ -4,6 +4,7 @@ Created on 9 Jun 2020
 @author: Chris
 '''
 from deck.deck import Card, RANKS, SUITS
+from prettytable import PrettyTable
 
 class Layout(object):
     '''
@@ -59,13 +60,33 @@ class Layouts(object):
         suits = SUITS * deck_num
         self.layouts = [Layout(suit, i) for i, suit in enumerate(suits)]
     
-    def get_layout_by_suit(self):
+    def __str__(self):
         '''
         '''
-        pass
+        headers = ["Layout_ID", "Suit", "Lowest", "Seven", "Highest"]
+        table = PrettyTable(headers)
+
+        # Add str representation of each layout to the table
+        map(lambda x: table.add_row(str(x)), self.layouts)
+        
+        return table
+
+    def get_layout_by_suit(self, get_suit):
+        '''
+        '''
+        for player in self.players:
+            if player.player_id == get_suit:
+                return player
+        else:
+            return None
     
-    def get_layout_by_num(self):
+    def get_layout_by_num(self, get_id):
         '''
         '''
-        pass
+        for layout in self.layouts:
+            if layout.id == get_id:
+                return layout
+        else:
+            return None
+    
 

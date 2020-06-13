@@ -80,12 +80,16 @@ class GameState(object):
         '''
         '''
         # TODO: multiple round game-winning logic
-        return None
+        return True
     
     def check_round_winner(self):
         '''
         '''
-        return self.current_player.check_if_winner()
+        # Get player instance from the id in the GameState
+        current_player_obj = self.players.get_player_by_id(self.current_player)
+
+        # Return whether player just played winning move
+        return current_player_obj.check_if_winner()
     
     def print_state_to_cli(self):
         '''
