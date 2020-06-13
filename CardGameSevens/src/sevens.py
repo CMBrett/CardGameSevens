@@ -1,7 +1,7 @@
 #!/usr/bin/env
 
 import argparse
-from cli.cli_functions import Cli
+from game_driver.game_driver import GameDriver
 
 def main():
     '''
@@ -12,19 +12,16 @@ def main():
     parser.add_argument('--list', dest='list', action='store_true', help='lists previously saved games')
     args = parser.parse_args()
 
-    cli = Cli()
-    cli.info("Welcome to the Sevens card game!")
+    # Instantiate game driver
+    driver = GameDriver()
 
     # Determine which function to start the game/display save data
     if args.create:
-        cli.create_game()
+        driver.create()
     if args.load:
-        cli.load_game()
+        driver.load_game()
     if args.list:
-        cli.list_saved_games()
-
-    
-               
+        driver.list_saved_games()
 
 if __name__ == '__main__':
     main()

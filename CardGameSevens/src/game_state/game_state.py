@@ -3,8 +3,9 @@ Created on 11 Jun 2020
 
 @author: Chris
 '''
+
 from deck.deck import Deck
-from players.player import Players
+from players.players import Players
 from layout.layout import Layouts
 
 class GameState(object):
@@ -13,18 +14,23 @@ class GameState(object):
     '''
 
 
-    def __init__(self, deck_num, round_num, player_num, human_num, comp_levels):
+    def __init__(self, user_input):
         '''
         Constructor
         '''
+        
         self.layouts = []
         self.round_number = 0
-        self.total_rounds = round_num
+        self.total_rounds = user_input["rounds"]
         self.dealer_id = 0
         self.current_player = 0
-        self.deck_num = deck_num
+        self.deck_num = user_input["decks"]
         
-        self.players = Players(player_num, human_num, comp_levels)
+        self.players = Players(
+            user_input["players"],
+            user_input["human players"],
+            user_input["comp_levels"]
+            )
     
     def start_new_round(self):
         '''

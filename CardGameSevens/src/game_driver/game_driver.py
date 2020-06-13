@@ -21,14 +21,12 @@ class GameDriver(object):
         '''
         self.cli = Cli()
 
-    def create(self, deck_num, player_num, human_num, comp_levels):
+    def create(self):
         '''
         '''
-        # Request user input for game parameters
-        user_input = self.cli.create_game()
 
-        # Create Game State
-        self.game = GameState(deck_num, player_num, human_num, comp_levels)
+        # Create Game State based on user input for game parameters
+        self.game = GameState(self.cli.create_game())
 
         # Run the game until a player has won
         while self.game.check_game_winner() == False:
@@ -37,9 +35,11 @@ class GameDriver(object):
     def run_game(self):
         '''
         '''
+
+        # Call run_round until there is a winner
         while self.game.check_round_winner() == False:
-                self.run_round()
-        
+            self.run_round()
+
         # Start a new round
         self.game.start_new_round()
 
