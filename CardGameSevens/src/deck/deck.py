@@ -22,6 +22,7 @@ class Card(object):
     
     def __repr__(self):
         '''Returns a printable representation of the object'''
+
         return "({}, {})".format(str(self.rank), str(self.suit))
         
     @classmethod
@@ -62,6 +63,7 @@ class Card(object):
     
     def remove_from_list(self, lst):
         '''Removes card from given list'''
+
         for i, lst_card in enumerate(lst):
             rank_match = lst_card.rank == self.rank
             suit_match = lst_card.suit == self.suit

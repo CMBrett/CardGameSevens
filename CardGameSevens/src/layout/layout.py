@@ -7,22 +7,18 @@ from deck.deck import Card, RANKS, SUITS
 from prettytable import PrettyTable
 
 class Layout(object):
-    '''
-    classdocs
-    '''
+    '''Represents a single layout.'''
 
-    def __init__(self, suit, layout_num):
-        '''
-        Constructor
-        '''
+    def __init__(self, suit, layout_id):
+        '''Creates Layout instance from suit and layout_id'''
+
         self.suit = suit
-        self.id = layout_num
+        self.id = layout_id
         self.cards = []
         self.valid_cards = self.calculate_valid_cards()
     
     def __repr__(self):
-        '''
-        '''
+        '''Returns a printable representation of the object'''
 
         return [
             self.id,
@@ -33,8 +29,7 @@ class Layout(object):
             ]
     
     def __str__(self):
-        '''
-        '''
+        '''Returns a string representation of the object'''
         param_list = [
             self.id,
             self.suit,
@@ -47,47 +42,42 @@ class Layout(object):
             
     
     def calculate_valid_cards(self):
-        '''
-        '''
-        number_of_cards = len(self.cards)
+        '''Calculates which cards can be played on layout.'''
         
-        print("number of cards: ", number_of_cards)
-        
+        # If layout is not active then only card of rank 7 is valid
         if len(self.cards) == 0:
             return [Card(7, self.suit)]
         else:
             valid_cards = [self.get_highest_playable_card(), self.get_lowest_playable_card()]
-            print("calc valid_cards: ", valid_cards)
             return [c for c in valid_cards if c is not None]
     
     def get_lowest_card_rank(self):
-        '''
-        '''
+        '''Returns rank of lowest card in layout, if no cards then returns None'''
+
         if len(self.cards) != 0: 
             return min(self.cards, key = lambda t: int(t.rank)).rank
         else:
             None
 
     def get_highest_card_rank(self):
-        '''
-        '''
+        '''Returns rank of highest card in layout, if no cards then returns None'''
+
         if len(self.cards) != 0: 
             return max(self.cards, key = lambda t: int(t.rank)).rank
         else:
             None
 
     def get_seven_value(self):
-        '''
-        '''
+        '''Returns whether layout is active based on if a card has been played'''
+
         if len(self.cards) != 0:
             return "layout active"
         else:
             return "Layout inactive"
 
     def get_lowest_playable_card(self):
-        '''
-        '''
-        
+        '''Returns card instance for the lowest playable card'''
+
         lowest_rank = self.get_lowest_card_rank()
         
         if lowest_rank:
@@ -99,8 +89,8 @@ class Layout(object):
             return None
     
     def get_lowest_playable_card_rank(self):
-        '''
-        '''
+        '''Returns card rank for the lowest playable card'''
+
         low_card = self.get_lowest_playable_card()
         if low_card is not None:
             return low_card.rank
@@ -108,9 +98,8 @@ class Layout(object):
             return None
     
     def get_highest_playable_card(self):
-        '''
-        '''
-        
+        '''Returns card instance for the highest playable card'''
+
         highest_rank = self.get_highest_card_rank()
         
         if highest_rank:
@@ -122,8 +111,8 @@ class Layout(object):
             return None
 
     def get_highest_playable_card_rank(self):
-        '''
-        '''
+        '''Returns card rank for the highest playable card'''
+
         high_card = self.get_highest_playable_card()
         if high_card is not None:
             return high_card.rank
@@ -132,21 +121,17 @@ class Layout(object):
 
 
 class Layouts(object):
-    '''
-    classdocs
-    '''
+    '''Represents a list of Layout objects, provides functions to perform on list.'''
 
     def __init__(self, deck_num):
-        '''
-        Constructor
-        '''
-        self.layout_amount = deck_num * 4
+        '''Creates all layouts to be used in-game based on deck_num'''
+
         suits = SUITS * deck_num
+        self.layout_amount = len(suits)
         self.layouts = [Layout(suit, i) for i, suit in enumerate(suits)]
 
     def __str__(self):
-        '''
-        '''
+        '''String representation to print table to cli.'''
 
         # Create table and add headers
         table = PrettyTable()        
@@ -164,23 +149,11 @@ class Layouts(object):
                 ])
 
         return table.get_string()
-
-    def get_layout_by_suit(self, get_suit):
-        '''
-        '''
-        for layout in self.layouts:
-            if layout.suit == get_suit:
-                return layout
-        else:
-            return None
     
     def get_layout_by_id(self, get_id):
-        '''
-        '''
+        '''Returns layout based on layout_id'''
         for layout in self.layouts:
             if layout.id == get_id:
                 return layout
         else:
             return None
-    
-

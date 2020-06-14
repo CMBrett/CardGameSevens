@@ -1,49 +1,41 @@
 '''
 Created on 9 Jun 2020
 
-@author: Chris
+@author: Christopher Brett
 '''
 from prettytable import PrettyTable
 from deck.deck import SUITS, CARD_VALS
 from utility import utility
 
 class Player(object):
-    '''
-    classdocs
-    '''
-
+    '''Parent class of Human and Computer players, contains common methods'''
 
     def __init__(self, player_id):
-        '''
-        Constructor
-        '''
+        '''Creates Player instance based on player_id'''
+
         self.player_id = player_id
         self.hand = []
         self.rounds_won = 0
     
     def clear_hand(self):
-        '''
-        '''
-        
+        '''Removes all cards from a player's hand'''
+
         self.hand = []
 
     def sort_hand(self):
-        '''
-        '''
+        '''Sorts hand based on rank'''
+
         self.hand = sorted(self.hand, key= lambda h:h.rank)
 
     def check_if_winner(self):
-        '''
-        '''
-        
+        '''Checks if player's hand is empty'''
+
         if len(self.hand) == 0:
             return True
         else:
             return False
 
     def __str__(self):
-        '''
-        '''
         player_string = ""
         newline = "\n"
         
@@ -60,18 +52,16 @@ class Player(object):
         return player_string
 
     def get_hand_table(self):
-        '''
-        '''
+        '''Provides table string for printing current cards in player's hand to cli'''
 
         # Create table and add headers
         table = PrettyTable()
 
-        # Add str representation of each layout to the table
+        # Add data of each layout to the table
         clubs_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "C"]))
         diamo_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "D"]))
         heart_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "H"]))
         spade_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "S"]))
-
         columns = [clubs_col, diamo_col, heart_col, spade_col]
         
         longest_list_length = len(max(columns, key=len))
@@ -85,13 +75,10 @@ class Player(object):
         return table.get_string()
     
     def card_val(self, ranks):
-        '''
-        '''
-        
+        '''Replaces text representation for face cards with integer'''
+
         for i, r in enumerate(ranks):
             if r > 10:
                 ranks[i] = CARD_VALS[r]
-                 
-        return ranks
-        
 
+        return ranks
