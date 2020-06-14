@@ -3,6 +3,9 @@ Created on 9 Jun 2020
 
 @author: Chris
 '''
+from prettytable import PrettyTable
+from deck.deck import SUITS
+from utility import utility
 
 class Player(object):
     '''
@@ -19,7 +22,24 @@ class Player(object):
         self.rounds_won = 0
     
     def clear_hand(self):
+        '''
+        '''
+        
         self.hand = []
+
+    def sort_hand(self):
+        '''
+        '''
+        self.hand = sorted(self.hand, key= lambda h:h.rank)
+
+    def check_if_winner(self):
+        '''
+        '''
+        
+        if len(self.hand) == 0:
+            return True
+        else:
+            return False
 
     def __str__(self):
         '''
@@ -38,3 +58,47 @@ class Player(object):
             player_string.append(newline)
 
         return player_string
+
+    def get_hand_table(self):
+        '''
+        '''
+
+        # Create table and add headers
+        table = PrettyTable()
+        titles = SUITS
+
+        # Add str representation of each layout to the table
+        clubs_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "C"]))
+        diamo_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "D"]))
+        heart_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "H"]))
+        spade_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "S"]))
+
+        columns = [clubs_col, diamo_col, heart_col, spade_col]
+        
+        longest_list_length = len(max(columns, key=len))
+        
+        for i, col in enumerate(columns):
+            
+            if len(col) < longest_list_length:
+                columns[i] = utility.pad(col, "", longest_list_length)
+            table.add_column(SUITS[i], columns[i], align='c', valign='m')
+
+        return table.get_string()
+    
+    def card_val(self, ranks):
+        '''
+        '''
+        card_vals = {
+            11: "J",
+            12: "Q",
+            13: "K",
+            14: "A"
+            }
+        
+        for i, r in enumerate(ranks):
+            if r > 10:
+                ranks[i] = card_vals[r]
+                 
+        return ranks
+        
+

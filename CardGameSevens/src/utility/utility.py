@@ -11,3 +11,9 @@ def contains(obj_list, filter):
         if filter(x):
             return True
     return False
+
+def pad(l, content, width):
+    '''
+    '''
+    l.extend([content] * (width - len(l)))
+    return l

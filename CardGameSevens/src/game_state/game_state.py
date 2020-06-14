@@ -7,6 +7,7 @@ Created on 11 Jun 2020
 from deck.deck import Deck
 from players.players import Players
 from layout.layout import Layouts
+from players.human import Human
 
 class GameState(object):
     '''
@@ -35,6 +36,7 @@ class GameState(object):
     def start_new_round(self):
         '''
         '''
+
         # Increment round number
         self.round_number += 1
         
@@ -51,7 +53,7 @@ class GameState(object):
         self.dealer_id += 1
 
         # Deal deck to players
-        self.game_deck.deal()
+        self.game_deck.deal(self.players)
         
         # Create layouts
         self.layouts = Layouts(self.deck_num)
@@ -59,11 +61,12 @@ class GameState(object):
     def process_command(self):
         '''
         '''
+
         # Get player instance from the id in the GameState
         current_player_obj = self.players.get_player_by_id(self.current_player)
         
         # Request and validate command from the current player
-        self.current_command = current_player_obj.request_command()
+        self.current_command = current_player_obj.request_command(self.layouts)
 
         # Update game state with validated command
         self.update(self.current_command)
@@ -86,7 +89,10 @@ class GameState(object):
         '''
         '''
         # TODO: multiple round game-winning logic
-        return True
+        if self.round_number > self.total_rounds:
+            return True
+        else:
+            return False
     
     def check_round_winner(self):
         '''
@@ -97,7 +103,19 @@ class GameState(object):
         # Return whether player just played winning move
         return current_player_obj.check_if_winner()
     
-    def print_state_to_cli(self):
+    def print_round_state_to_cli(self):
         '''
         '''
-        pass
+        
+        # Print layouts table
+        print(self.layouts)
+        print("")
+
+        # Print Player cards if human
+        current_player_obj = self.players.get_player_by_id(self.current_player)
+        
+        if isinstance(current_player_obj, Human):
+            print("Printing Human Player {} cards:".format(current_player_obj.player_id))
+            print(current_player_obj.get_hand_table())
+            print("")
+

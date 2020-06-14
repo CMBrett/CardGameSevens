@@ -15,6 +15,7 @@ class Computer(Player):
         '''
         self.player_id = player_id
         self.level = level
+        self.hand = []
     
     def calculate_move(self):
         '''

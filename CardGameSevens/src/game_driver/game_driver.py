@@ -5,6 +5,7 @@ Created on 11 Jun 2020
 '''
 from game_state.game_state import GameState
 from cli.cli_functions import Cli
+from colorama.initialise import init
 
 
 class GameDriver(object):
@@ -20,6 +21,7 @@ class GameDriver(object):
         Constructor
         '''
         self.cli = Cli()
+        init()
 
     def create(self):
         '''
@@ -30,6 +32,7 @@ class GameDriver(object):
 
         # Run the game until a player has won
         while self.game.check_game_winner() == False:
+            print("Game Start")
             self.run_game()
 
     def run_game(self):
@@ -38,6 +41,7 @@ class GameDriver(object):
 
         # Call run_round until there is a winner
         while self.game.check_round_winner() == False:
+            print("Round Start")
             self.run_round()
 
         # Start a new round
@@ -47,7 +51,7 @@ class GameDriver(object):
         '''
         '''
         # Display current game state in cli output
-        self.game.print_state_to_cli()
+        self.game.print_round_state_to_cli()
 
         # Process command from current_player
         self.game.process_command()

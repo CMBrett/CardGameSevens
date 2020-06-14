@@ -22,6 +22,14 @@ class Players(object):
             for i in range(player_num)
             ]
     
+    def __len__(self):
+        '''
+        '''
+        return len(self.players)
+    
+    def __getitem__(self, item):
+        return self.players[item]
+    
     def clear_hands(self):
         '''
         '''

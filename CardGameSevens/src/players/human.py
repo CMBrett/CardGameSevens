@@ -11,9 +11,9 @@ class Human(Player):
     classdocs
     '''
 
-    def request_command(self):
+    def request_command(self, curr_layouts):
 
-        self.current_command = Command().get_user_command()
+        self.current_command = Command.get_user_command(curr_layouts)
         
         if self.current_command.is_possible():
             return self.current_command

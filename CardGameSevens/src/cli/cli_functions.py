@@ -45,15 +45,15 @@ class Instructions(object):
         COMP_LEVEL: (1,2)
         }
     
-    INSTRUCTION_STR = "Please enter an integer to determine the number of {} for this game: (default={})\n"
-    COMP_LEVEL_STR = "Please enter an integer to determine the {} for 'Computer {}' for this game: (default={})\n"
+    INSTRUCTION_STR = "Please enter an integer to determine the number of {} for this game: (default={}, min={}, max={})"
+    COMP_LEVEL_STR = "Please enter an integer to determine the {} for 'Computer {}' for this game: (default={}, min=1, max=2)"
     
     # Instruction for variable entry to be printed to CLI
     INSTRUCTION= {
-        DECK_NUM: INSTRUCTION_STR.format(DECK_NUM, DEFAULT[DECK_NUM]),
-        ROUND_NUM: INSTRUCTION_STR.format(ROUND_NUM, DEFAULT[ROUND_NUM]),
-        PLAYER_NUM: INSTRUCTION_STR.format(PLAYER_NUM, DEFAULT[PLAYER_NUM]),
-        HUMAN_NUM: INSTRUCTION_STR.format(HUMAN_NUM, DEFAULT[HUMAN_NUM]),
+        DECK_NUM: INSTRUCTION_STR.format(DECK_NUM, DEFAULT[DECK_NUM], VALUE[DECK_NUM][0], VALUE[DECK_NUM][1]),
+        ROUND_NUM: INSTRUCTION_STR.format(ROUND_NUM, DEFAULT[ROUND_NUM], VALUE[ROUND_NUM][0], VALUE[ROUND_NUM][1]),
+        PLAYER_NUM: INSTRUCTION_STR.format(PLAYER_NUM, DEFAULT[PLAYER_NUM], VALUE[PLAYER_NUM][0], VALUE[PLAYER_NUM][1]),
+        HUMAN_NUM: INSTRUCTION_STR.format(HUMAN_NUM, DEFAULT[HUMAN_NUM], VALUE[HUMAN_NUM][0], VALUE[HUMAN_NUM][1]),
         }
     
     # Instructions to request when creating a game
@@ -87,8 +87,9 @@ class Cli(object):
     def create_game(self):
         '''
         '''
+
+        # Request necessary parameters
         for instr in Instructions.CREATE:
-            # Request necessary parameters
             self.instruction = instr
             self.request_user_input()
         
@@ -102,8 +103,6 @@ class Cli(object):
             # Request necessary parameters
             self.instruction = Instructions.COMP_LEVEL
             self.request_comp_levels(i)
-
-        print(self.input)
 
         return self.input
 
@@ -124,7 +123,7 @@ class Cli(object):
         '''
 
         # Print instruction and retrieve user input
-        self.notice(Instructions.INSTRUCTION[self.instruction])
+        self.info(Instructions.INSTRUCTION[self.instruction])
         self.current_input = input()
 
         # Store input if type and value check are successful, else request new input
@@ -138,10 +137,12 @@ class Cli(object):
         '''
         '''
 
-        self.notice(
+        self.info(
             Instructions.COMP_LEVEL_STR.format(
-                Instructions.COMP_LEVEL, comp_id, Instructions.DEFAULT[Instructions.COMP_LEVEL])
-        )
+                Instructions.COMP_LEVEL, comp_id, Instructions.DEFAULT[Instructions.COMP_LEVEL],
+                    Instructions.VALUE[Instructions.COMP_LEVEL][0], Instructions.VALUE[Instructions.COMP_LEVEL][1]
+                    )
+            )
         self.current_input = input()
 
         # Create dict entry in input dict for the computer levels
@@ -162,7 +163,8 @@ class Cli(object):
         starting_com_index = self.human_num + 1
         self.comp_instr_str = [
             Instructions.COMP_LEVEL_STR.format(
-                    Instructions.COMP_LEVEL, i, Instructions.DEFAULT[Instructions.COMP_LEVEL])
+                    Instructions.COMP_LEVEL, i, Instructions.DEFAULT[Instructions.COMP_LEVEL],
+                    Instructions.VALUE[Instructions.COMP_LEVEL][0], Instructions.VALUE[Instructions.COMP_LEVEL][1])
             for i in range(starting_com_index, starting_com_index + computer_num)
             ]
 
@@ -205,12 +207,11 @@ class Cli(object):
         else:
             
             self.input["comp_levels"][comp_id + self.human_num] = self.proc_input
-    
+
     def info(self, output_str):
         '''
         '''
-        init()
-        print(Fore.BLUE + output_str + Fore.RESET)
+        print(Fore.LIGHTBLUE_EX + output_str + Fore.RESET)
     
     def request_input(self, output_str):
         '''
