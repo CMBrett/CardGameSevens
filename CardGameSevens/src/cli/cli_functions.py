@@ -7,6 +7,10 @@ Created on 11 Jun 2020
 from colorama import Fore
 from colorama.initialise import init
 
+def get_input():
+    ''''''
+    return input()
+
 class Instructions(object):
     '''Contains output strings to prompt user input and default and type for checking input.'''
 
@@ -119,7 +123,7 @@ class Cli(object):
 
         # Print instruction and retrieve user input
         self.info(Instructions.INSTRUCTION[self.instruction])
-        self.current_input = input()
+        self.current_input = get_input()
 
         # Store input if type and value check are successful, else request new input
         if self.check_input_type() and self.check_input_value():

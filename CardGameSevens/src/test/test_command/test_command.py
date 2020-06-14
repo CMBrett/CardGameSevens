@@ -117,7 +117,6 @@ class TestCommand(unittest.TestCase):
         
         test_cmd_strs = test_cmd_strs_1 + test_cmd_strs_2
         
-        print(test_cmd_strs)
         
         test_commands = [Command(c, state.layouts) for c in test_cmd_strs]
         
