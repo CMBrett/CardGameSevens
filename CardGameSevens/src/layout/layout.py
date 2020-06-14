@@ -5,20 +5,18 @@ Created on 9 Jun 2020
 '''
 from deck.deck import Card, RANKS, SUITS
 from prettytable import PrettyTable
-import itertools
 
 class Layout(object):
     '''
     classdocs
     '''
 
-
     def __init__(self, suit, layout_num):
         '''
         Constructor
         '''
         self.suit = suit
-        self.layout_num = layout_num
+        self.id = layout_num
         self.cards = []
         self.valid_cards = self.calculate_valid_cards()
     
@@ -27,35 +25,54 @@ class Layout(object):
         '''
 
         return [
-            self.layout_num,
+            self.id,
             self.suit,
-            self._get_lowest_card_rank(),
-            self._get_seven_value(),
-            self._get_highest_card_rank()
+            self.get_lowest_card_rank(),
+            self.get_seven_value(),
+            self.get_highest_card_rank()
             ]
+    
+    def __str__(self):
+        '''
+        '''
+        param_list = [
+            self.id,
+            self.suit,
+            self.get_lowest_playable_card(),
+            self.get_seven_value(),
+            self.get_highest_playable_card()
+        ]
+        
+        return ",".join(str(p) for p in param_list)
+            
     
     def calculate_valid_cards(self):
         '''
         '''
+        number_of_cards = len(self.cards)
+        
+        print("number of cards: ", number_of_cards)
+        
         if len(self.cards) == 0:
             return [Card(7, self.suit)]
         else:
-            valid_cards = [self._get_highest_playable_card(), self._get_lowest_playable_card()]
+            valid_cards = [self.get_highest_playable_card(), self.get_lowest_playable_card()]
+            print("calc valid_cards: ", valid_cards)
             return [c for c in valid_cards if c is not None]
     
     def get_lowest_card_rank(self):
         '''
         '''
-        if not len(self.cards) == 0: 
-            min(self.cards, key = lambda t: int(t.rank)).rank
+        if len(self.cards) != 0: 
+            return min(self.cards, key = lambda t: int(t.rank)).rank
         else:
             None
 
     def get_highest_card_rank(self):
         '''
         '''
-        if not len(self.cards) == 0: 
-            max(self.cards, key = lambda t: int(t.rank)).rank
+        if len(self.cards) != 0: 
+            return max(self.cards, key = lambda t: int(t.rank)).rank
         else:
             None
 
@@ -67,21 +84,51 @@ class Layout(object):
         else:
             return "Layout inactive"
 
-    def _get_lowest_playable_card(self):
+    def get_lowest_playable_card(self):
         '''
         '''
-        lowest_playable_rank = self._get_lowest_card_rank() - 1
         
-        if lowest_playable_rank in RANKS:
-            return Card(lowest_playable_rank, self.suit)
+        lowest_rank = self.get_lowest_card_rank()
+        
+        if lowest_rank:
+            lowest_playable_rank = lowest_rank - 1
+            
+            if lowest_playable_rank in RANKS:
+                return Card(lowest_playable_rank, self.suit)
+        else:
+            return None
     
-    def _get_highest_playable_card(self):
+    def get_lowest_playable_card_rank(self):
         '''
         '''
-        highest_playable_rank = self._get_highest_card_rank() + 1
+        low_card = self.get_lowest_playable_card()
+        if low_card is not None:
+            return low_card.rank
+        else:
+            return None
+    
+    def get_highest_playable_card(self):
+        '''
+        '''
         
-        if highest_playable_rank in RANKS:
-            return Card(highest_playable_rank, self.suit)
+        highest_rank = self.get_highest_card_rank()
+        
+        if highest_rank:
+            highest_playable_rank = highest_rank + 1
+            
+            if highest_playable_rank in RANKS:
+                return Card(highest_playable_rank, self.suit)
+        else:
+            return None
+
+    def get_highest_playable_card_rank(self):
+        '''
+        '''
+        high_card = self.get_highest_playable_card()
+        if high_card is not None:
+            return high_card.rank
+        else:
+            return None
 
 
 class Layouts(object):
@@ -109,11 +156,11 @@ class Layouts(object):
         # Add str representation of each layout to the table
         for layout in self.layouts:
             table.add_row([
-                layout.layout_num,
+                layout.id,
                 layout.suit,
-                layout.get_lowest_card_rank(),
+                layout.get_lowest_playable_card_rank(),
                 layout.get_seven_value(),
-                layout.get_highest_card_rank()
+                layout.get_highest_playable_card_rank()
                 ])
 
         return table.get_string()
@@ -121,13 +168,13 @@ class Layouts(object):
     def get_layout_by_suit(self, get_suit):
         '''
         '''
-        for player in self.players:
-            if player.player_id == get_suit:
-                return player
+        for layout in self.layouts:
+            if layout.suit == get_suit:
+                return layout
         else:
             return None
     
-    def get_layout_by_num(self, get_id):
+    def get_layout_by_id(self, get_id):
         '''
         '''
         for layout in self.layouts:

@@ -15,7 +15,7 @@ class Human(Player):
 
         self.current_command = Command.get_user_command(curr_layouts)
         
-        if self.current_command.is_possible():
+        if self.current_command.is_valid(self.hand):
             return self.current_command
         else:
             self.request_command()

@@ -21,6 +21,7 @@ class Players(object):
             Human(i) if i < human_num else Computer(i, comp_levels[i])
             for i in range(player_num)
             ]
+        print("Players initiated: ", [p.player_id for p in self.players])
     
     def __len__(self):
         '''

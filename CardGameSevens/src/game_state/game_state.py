@@ -69,23 +69,37 @@ class GameState(object):
         self.current_command = current_player_obj.request_command(self.layouts)
 
         # Update game state with validated command
-        self.update(self.current_command)
+        self.update()
     
     def update(self):
         '''
         '''
         # Remove card from current players hand
-        self.current_player.hand.remove(self.current_command.card)
+        self.current_command.card.remove_from_list(self.players.get_player_by_id(self.current_player).hand)
         
         # Add card to Layout
-        self.layouts.get_layout_by_suit(self.current_command.card.suit).cards.append(self.current_command.card)
+        layout = self.layouts.get_layout_by_suit(self.current_command.card.suit)
+        layout.cards.append(self.current_command.card)
+        
+        # Update layout valid_cards
+        layout.calculate_valid_cards()
+        
+        # end_turn
+        self.end_turn()
     
     def end_turn(self):
         '''
         '''
-        # TODO: change current player
+        # Change current player
+        if self.current_player != len(self.players) - 1:
+            self.current_player += 1
+        else:
+            self.current_player = 0
+        
+        print("Player_id set to ", self.current_player)
+        
     
-    def check_game_winner(self):
+    def check_game_end(self):
         '''
         '''
         # TODO: multiple round game-winning logic

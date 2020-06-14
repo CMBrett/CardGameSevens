@@ -31,7 +31,7 @@ class GameDriver(object):
         self.game = GameState(self.cli.create_game())
 
         # Run the game until a player has won
-        while self.game.check_game_winner() == False:
+        while self.game.check_game_end() == False:
             print("Game Start")
             self.run_game()
 
@@ -57,8 +57,7 @@ class GameDriver(object):
         self.game.process_command()
         
         # Check if this was a winning move
-        if self.game.check_winner():
-            # TODO: method for ending game
+        if self.game.check_round_winner():
             print("Player '{}' is the Winner!".format(self.game.current_player))
         else:
             self.game.end_turn()

@@ -65,7 +65,6 @@ class Player(object):
 
         # Create table and add headers
         table = PrettyTable()
-        titles = SUITS
 
         # Add str representation of each layout to the table
         clubs_col = self.card_val(sorted([c.rank for c in self.hand if c.suit == "C"]))
