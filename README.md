@@ -20,4 +20,7 @@ python sevens.py --create
 ```
 
 The save and load game functionality is not currently implemented.
-Coming soon... :)
+
+Further tests will be submitted in the future to debug the following known problems:
+* Command line interface robustness
+* Computer move selection errors
