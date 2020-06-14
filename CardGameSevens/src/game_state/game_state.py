@@ -34,7 +34,7 @@ class GameState(object):
         '''Updates class variable to start a new round.'''
         
         # Notify user of new round
-        print("Round number '{}' starting ...".format(self.round_number))
+        print("\nRound number '{}' starting ...".format(self.round_number))
         
         # Clear players cards
         self.players.clear_hands()
@@ -44,12 +44,6 @@ class GameState(object):
 
         # Shuffle deck
         self.game_deck.shuffle()
-
-        # Increment dealer_id
-        if self.dealer_id != len(self.players) - 1:
-            self.dealer_id += 1
-        else:
-            self.dealer_id = 0
 
         # Deal deck to players
         self.game_deck.deal(self.players)
@@ -63,7 +57,7 @@ class GameState(object):
         # Get player instance from the id in the GameState
         current_player_obj = self.players.get_player_by_id(self.current_player)
         
-        print("Player {}'s Turn ({})".format(
+        print("Player {}'s Turn ({})\n".format(
             self.current_player, current_player_obj.__class__.__name__)
         )
         
@@ -72,7 +66,7 @@ class GameState(object):
         
         print(
             "Command: {} given by Player: {}_{}".format(
-                self.current_command, type(current_player_obj), self.current_player)
+                self.current_command, current_player_obj.__class__.__name__, self.current_player)
         )
 
         # Skip update if command is a pass
@@ -101,8 +95,6 @@ class GameState(object):
             self.current_player += 1
         else:
             self.current_player = 0
-
-        print("Player_id set to ", self.current_player)
     
     def end_round(self):
         '''Increments round_number'''
@@ -110,15 +102,17 @@ class GameState(object):
         # Increment round number
         self.round_number += 1
 
+        # Increment dealer_id
+        if self.dealer_id != len(self.players) - 1:
+            self.dealer_id += 1
+        else:
+            self.dealer_id = 0
+
     def check_game_end(self):
         '''Checks if specified number of game rounds have been exceeded.'''
 
         # Check if current round is larger than the number of total desired rounds
-        game_end = self.round_number > self.total_rounds
-
-        print("game_end: {}".format(game_end))
-
-        return game_end
+        return self.round_number > self.total_rounds
 
     def check_round_winner(self):
         '''Check if current player has played their last card.'''

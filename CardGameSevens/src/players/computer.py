@@ -29,7 +29,6 @@ class Computer(Player):
         if self.current_command.is_valid(self.hand):
             return self.current_command
         else:
-            print("Invalid computer command")
             self.request_command(curr_layouts)
 
     def get_computer_command(self):

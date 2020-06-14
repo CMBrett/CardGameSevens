@@ -121,9 +121,15 @@ class Cli(object):
     def request_user_input(self):
         '''Requests user input and checks type and value, requests input again if checks are unsuccessful.'''
 
+        self.info("")
+
         # Print instruction and retrieve user input
-        self.info(Instructions.INSTRUCTION[self.instruction])
+        self.request_input(Instructions.INSTRUCTION[self.instruction])
         self.current_input = get_input()
+        
+        if self.current_input == "":
+            self.current_input = Instructions.DEFAULT[self.instruction]
+            self.info("'{}' set to default value: '{}'".format(self.instruction, self.current_input))
 
         # Store input if type and value check are successful, else request new input
         if self.check_input_type() and self.check_input_value():
@@ -135,8 +141,10 @@ class Cli(object):
     def request_comp_levels(self, comp_id):
         '''Requests user input for computer difficulty levels.'''
 
+        self.info("")
+
         # Print appropriate instruction string
-        self.info(
+        self.request_input(
             Instructions.COMP_LEVEL_STR.format(
                 Instructions.COMP_LEVEL, comp_id, Instructions.DEFAULT[Instructions.COMP_LEVEL],
                     Instructions.VALUE[Instructions.COMP_LEVEL][0], Instructions.VALUE[Instructions.COMP_LEVEL][1]
@@ -145,6 +153,10 @@ class Cli(object):
 
         # Await user input
         self.current_input = input()
+
+        if self.current_input == "":
+            self.current_input = Instructions.DEFAULT[Instructions.COMP_LEVEL]
+            self.info("'{}' set to default value: '{}'".format(self.instruction, self.current_input))
 
         # Create dict entry in input dict for the computer levels
         self.input["comp_levels"] = {}

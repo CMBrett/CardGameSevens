@@ -24,20 +24,19 @@ class GameDriver(object):
         self.game = GameState(self.cli.create_game())
 
         # Run the game until a player has won
-        while self.game.check_game_end() == False:
-            print("Game Start")
+        while not self.game.check_game_end():
+            print("\nGame Start")
             self.run_game()
 
     def run_game(self):
         '''Runs the rounds and starts new rounds if a player is identified as a winner.'''
 
-        # Call run_round until there is a winner
-        while self.game.check_round_winner() == False:
-            print("Round Start")
-            self.run_round()
-
         # Start a new round
         self.game.start_new_round()
+
+        # Call run_round until there is a winner
+        while not self.game.check_round_winner():
+            self.run_round()
 
     def run_round(self):
         '''Handles the running of a turn, print to cli and requesting user input.'''

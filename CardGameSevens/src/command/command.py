@@ -27,8 +27,6 @@ class Command(object):
             # Separate command string and pass to relevant constructor
             self.card = Card.create_from_user_cmd(command_str.split('L')[0])
             self.layout = curr_layouts.get_layout_by_id(int(command_str.split('L')[1]))
-            
-            print("Command created: card: {}, layout: {}".format(self.card, self.layout))
 
     def __str__(self):
         if self.pass_cmd:
@@ -42,6 +40,7 @@ class Command(object):
 
         # Print command request
         print("Please enter next move: (format: <rank><suit>L<layout_id>)")
+        print("(e.g 7CL0 to put the seven of clubs on layout_id 0)")
 
         # Collect user response
         user_input = input()
@@ -58,20 +57,23 @@ class Command(object):
 
         return cls(com_input, curr_layouts)
 
-    def is_valid(self, player_hand):
+    def is_valid(self, player_hand, verbose=False):
         '''Performs validation of user commands'''
 
         if self.pass_cmd:
             validity = True
+        elif self.layout is None:
+            validity = False
         else:
             card_in_layout_valid_cards = self.card.in_list(self.layout.calculate_valid_cards())
             card_in_player_hand = self.card.in_list(player_hand)
             validity = (card_in_layout_valid_cards and card_in_player_hand) or self.pass_cmd
 
-        if validity:
-            print("Command is valid")
-        else:
-            print("Command is invalid")
+        if verbose:
+            if validity:
+                print("Command is valid")
+            else:
+                print("Command is invalid")
 
         return validity
     

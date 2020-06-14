@@ -38,6 +38,7 @@ class Card(object):
         else:
             if isalpha(card_cmd_str[0]):
                 rank = FACE_VALS[card_cmd_str[0]]
+                print(rank)
             else:
                 rank = card_cmd_str[0]
             suit = card_cmd_str[1]

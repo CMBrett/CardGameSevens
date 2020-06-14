@@ -150,9 +150,9 @@ class Layouts(object):
             table.add_row([
                 layout.id,
                 layout.suit,
-                layout.get_lowest_playable_card_rank(),
+                layout.get_lowest_card_rank(),
                 layout.get_seven_value(),
-                layout.get_highest_playable_card_rank()
+                layout.get_highest_card_rank()
                 ])
         return table.get_string()
 
