@@ -37,7 +37,6 @@ class Layout(object):
             self.get_seven_value(),
             self.get_highest_playable_card()
         ]
-        
         return ",".join(str(p) for p in param_list)
             
     
@@ -70,14 +69,16 @@ class Layout(object):
     def get_seven_value(self):
         '''Returns whether layout is active based on if a card has been played'''
 
-        if len(self.cards) != 0:
-            return "layout active"
+        if len(self.cards) == 13:
+            return "Layout complete"
+        elif len(self.cards) != 0:
+            return "Layout active"
         else:
             return "Layout inactive"
 
     def get_lowest_playable_card(self):
         '''Returns card instance for the lowest playable card'''
-
+        
         lowest_rank = self.get_lowest_card_rank()
         
         if lowest_rank:
@@ -90,6 +91,9 @@ class Layout(object):
     
     def get_lowest_playable_card_rank(self):
         '''Returns card rank for the lowest playable card'''
+
+        if len(self.cards) == 1:
+            return "open"
 
         low_card = self.get_lowest_playable_card()
         if low_card is not None:
@@ -112,6 +116,9 @@ class Layout(object):
 
     def get_highest_playable_card_rank(self):
         '''Returns card rank for the highest playable card'''
+
+        if len(self.cards) == 1:
+            return "open"
 
         high_card = self.get_highest_playable_card()
         if high_card is not None:
@@ -147,8 +154,11 @@ class Layouts(object):
                 layout.get_seven_value(),
                 layout.get_highest_playable_card_rank()
                 ])
-
         return table.get_string()
+
+    def __iter__(self):
+        self.__i = 0
+        return iter(self.layouts)    
     
     def get_layout_by_id(self, get_id):
         '''Returns layout based on layout_id'''

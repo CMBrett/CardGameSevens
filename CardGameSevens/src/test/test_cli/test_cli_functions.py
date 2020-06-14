@@ -12,8 +12,10 @@ class TestCliFunctions(unittest.TestCase):
     def test_cli_create(self):
         '''This test ensures that the cli.create_game function does not raise any exceptions.'''
         
-        _ = Cli().create_game()
-
+        output = Cli().create_game()
+        # TODO: add mock user input
+        
+        print(output)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testCliFunctions']

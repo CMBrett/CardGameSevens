@@ -5,10 +5,12 @@ Created on 9 Jun 2020
 '''
 
 import random
+from curses.ascii import isalpha
 
 SUITS = ["C", "D", "H", "S"]
 RANKS = [n for n in range(2, 15)]
 CARD_VALS = {11: "J", 12: "Q", 13: "K", 14: "A"}
+FACE_VALS = {"J": 11, "Q": 12, "K": 13, "A": 14}
 
 class Card(object):
     '''Represents a playing card'''
@@ -31,13 +33,14 @@ class Card(object):
         
         # Determine rank if rank is double digit
         if len(card_cmd_str) == 3:
-            rank = card_cmd_str[0:1]
+            rank = card_cmd_str[0:2]
             suit = card_cmd_str[2]
         else:
-            rank = cls._get_rank_from_user_cmd(card_cmd_str[0])
+            if isalpha(card_cmd_str[0]):
+                rank = FACE_VALS[card_cmd_str[0]]
+            else:
+                rank = card_cmd_str[0]
             suit = card_cmd_str[1]
-        
-        print("Creating card for command: {}, rank: {}, suit: {}".format(card_cmd_str, rank, suit))
         
         return cls(int(rank), suit)
 
@@ -80,6 +83,10 @@ class Deck(object):
         '''Creates game_deck dependent of number of decks used.'''
 
         self.cards = [Card(r,s) for s in SUITS for r in RANKS] * deck_num
+
+    def __iter__(self):
+        self.__i = 0
+        return iter(self.cards)
 
     def shuffle(self):
         '''Shuffles the cards.'''

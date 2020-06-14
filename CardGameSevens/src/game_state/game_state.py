@@ -17,7 +17,7 @@ class GameState(object):
         
         # Set starting values for class members
         self.layouts = []
-        self.round_number = 0
+        self.round_number = 1
         self.dealer_id = 0
         self.current_player = 0
 
@@ -32,9 +32,9 @@ class GameState(object):
     
     def start_new_round(self):
         '''Updates class variable to start a new round.'''
-
-        # Increment round number
-        self.round_number += 1
+        
+        # Notify user of new round
+        print("Round number '{}' starting ...".format(self.round_number))
         
         # Clear players cards
         self.players.clear_hands()
@@ -46,7 +46,10 @@ class GameState(object):
         self.game_deck.shuffle()
 
         # Increment dealer_id
-        self.dealer_id += 1
+        if self.dealer_id != len(self.players) - 1:
+            self.dealer_id += 1
+        else:
+            self.dealer_id = 0
 
         # Deal deck to players
         self.game_deck.deal(self.players)
@@ -60,14 +63,25 @@ class GameState(object):
         # Get player instance from the id in the GameState
         current_player_obj = self.players.get_player_by_id(self.current_player)
         
+        print("Player {}'s Turn ({})".format(
+            self.current_player, current_player_obj.__class__.__name__)
+        )
+        
         # Request and validate command from the current player
         self.current_command = current_player_obj.request_command(self.layouts)
+        
+        print(
+            "Command: {} given by Player: {}_{}".format(
+                self.current_command, type(current_player_obj), self.current_player)
+        )
 
-        # Update game state with validated command
-        self.update()
+        # Skip update if command is a pass
+        if not self.current_command.pass_cmd:
+            # Update game state with validated command
+            self.update()
     
     def update(self):
-        '''Updates the players cards, layouts and ends the current player's turn'''
+        '''Updates the players cards and layouts'''
 
         # Remove card from current players hand
         self.current_command.card.remove_from_list(self.players.get_player_by_id(self.current_player).hand)
@@ -78,9 +92,6 @@ class GameState(object):
         
         # Update layout valid_cards
         layout.calculate_valid_cards()
-        
-        # end_turn
-        self.end_turn()
     
     def end_turn(self):
         '''Sets current player to next player_id.'''
@@ -92,15 +103,22 @@ class GameState(object):
             self.current_player = 0
 
         print("Player_id set to ", self.current_player)
+    
+    def end_round(self):
+        '''Increments round_number'''
+
+        # Increment round number
+        self.round_number += 1
 
     def check_game_end(self):
         '''Checks if specified number of game rounds have been exceeded.'''
 
         # Check if current round is larger than the number of total desired rounds
-        if self.round_number > self.total_rounds:
-            return True
-        else:
-            return False
+        game_end = self.round_number > self.total_rounds
+
+        print("game_end: {}".format(game_end))
+
+        return game_end
 
     def check_round_winner(self):
         '''Check if current player has played their last card.'''
@@ -108,8 +126,14 @@ class GameState(object):
         # Get player instance from the id in the GameState
         current_player_obj = self.players.get_player_by_id(self.current_player)
 
-        # Return whether player just played winning move
-        return current_player_obj.check_if_winner()
+        # Check whether player just played winning move
+        winner = current_player_obj.check_if_winner()
+
+        if winner:
+            print("Round has been won!")
+            self.end_round()
+    
+        return winner
 
     def print_round_state_to_cli(self):
         '''Prints the current layout state and human player's hand if current player'''
