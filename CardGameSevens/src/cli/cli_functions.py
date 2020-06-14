@@ -1,15 +1,15 @@
 '''
 Created on 11 Jun 2020
 
-@author: Chris
+@author: Christopher Brett
 '''
-from builtins import int
+
 from colorama import Fore
 from colorama.initialise import init
 
 class Instructions(object):
-    '''
-    '''
+    '''Contains output strings to prompt user input and default and type for checking input.'''
+
     DECK_NUM = "decks"
     ROUND_NUM = "rounds"
     PLAYER_NUM = "players"
@@ -64,11 +64,12 @@ class Instructions(object):
     
 
 class Cli(object):
-    '''
-    classdocs
+    '''Cli is used to request and check user input and output coloured commands to the cli.
     '''
 
     def __init__(self):
+        '''Declares class members for use in member functions'''
+
         self.current_input = None
         self.instruction = None
         self.input = {}
@@ -85,8 +86,7 @@ class Cli(object):
         init()
 
     def create_game(self):
-        '''
-        '''
+        '''Requests user input for game creation parameters.'''
 
         # Request necessary parameters
         for instr in Instructions.CREATE:
@@ -106,21 +106,16 @@ class Cli(object):
 
         return self.input
 
-    @staticmethod
     def load_game(self):
-        '''
-        '''
+        '''Requests user input for game load parameters.'''
         pass
 
-    @staticmethod
     def list_saved_games(self):
-        '''
-        '''
+        '''Lists all saved games.'''
         pass
 
     def request_user_input(self):
-        '''
-        '''
+        '''Requests user input and checks type and value, requests input again if checks are unsuccessful.'''
 
         # Print instruction and retrieve user input
         self.info(Instructions.INSTRUCTION[self.instruction])
@@ -134,15 +129,17 @@ class Cli(object):
             self.request_user_input()
     
     def request_comp_levels(self, comp_id):
-        '''
-        '''
+        '''Requests user input for computer difficulty levels.'''
 
+        # Print appropriate instruction string
         self.info(
             Instructions.COMP_LEVEL_STR.format(
                 Instructions.COMP_LEVEL, comp_id, Instructions.DEFAULT[Instructions.COMP_LEVEL],
                     Instructions.VALUE[Instructions.COMP_LEVEL][0], Instructions.VALUE[Instructions.COMP_LEVEL][1]
                     )
             )
+
+        # Await user input
         self.current_input = input()
 
         # Create dict entry in input dict for the computer levels
@@ -156,11 +153,15 @@ class Cli(object):
             self.request_comp_levels()
     
     def generate_comp_instr_str(self):
-        '''
-        '''
+        '''Generates instruction strings to prompt user for computer difficulty level.'''
 
+        # Calculate number of computer players
         computer_num = self.player_num - self.human_num
+        
+        # Calculate strating number for computer player_ids
         starting_com_index = self.human_num + 1
+        
+        # Create list of instruction strings for user input
         self.comp_instr_str = [
             Instructions.COMP_LEVEL_STR.format(
                     Instructions.COMP_LEVEL, i, Instructions.DEFAULT[Instructions.COMP_LEVEL],
@@ -169,10 +170,10 @@ class Cli(object):
             ]
 
     def check_input_type(self):
-        '''
-        '''
+        '''Checks string input can be cast to correct data type.'''
 
         try:
+            # Check provided input can be cast to intended data type
             self.proc_input = Instructions.DATA_TYPE[self.instruction](self.current_input)
         except Exception:
             return False
@@ -180,13 +181,12 @@ class Cli(object):
             return True
     
     def check_input_value(self):
-        '''
-        '''
+        '''Checks value of given input is acceptable.'''
 
         value_def = Instructions.VALUE[self.instruction]
         
         try:
-            # TODO: create cli message to inform user of value violation type
+            # Raise exceptions if provided value is unacceptable as input
             if self.proc_input < value_def[0]:
                 raise ValueError("Input is smaller than the minimum limit")
             
@@ -200,35 +200,36 @@ class Cli(object):
             return True
 
     def store_user_input(self, comp_id=None):
-        '''
-        '''
+        '''Stores user input into a dict which will be used to create the game_state.'''
+
         if comp_id is None:
+            # Add processed input to input dict using the instruction as the key
             self.input[self.instruction] = self.proc_input
         else:
-            
+            # Add processed input to comp_levels entry of input dict
             self.input["comp_levels"][comp_id + self.human_num] = self.proc_input
 
     def info(self, output_str):
-        '''
-        '''
+        '''Prints info message to cli in light blue.'''
+
         print(Fore.LIGHTBLUE_EX + output_str + Fore.RESET)
     
     def request_input(self, output_str):
-        '''
-        '''
+        '''Prints user prompt to cli in magenta.'''
+
         print(Fore.MAGENTA + output_str + Fore.RESET)
     
     def warning(self, output_str):
-        '''
-        '''
+        '''Prints warning message to cli in yellow.'''
+
         print(Fore.YELLOW + output_str + Fore.RESET)
         
     def error(self, output_str):
-        '''
-        '''
+        '''Prints error message to cli in red.'''
+
         print(Fore.RED + output_str + Fore.RESET)
     
     def notice(self, output_str):
-        '''
-        '''
+        '''Prints notice message to cli in default colour.'''
+
         print(output_str)

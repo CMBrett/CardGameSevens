@@ -1,21 +1,17 @@
 '''
 Created on 11 Jun 2020
 
-@author: Chris
+@author: Christopher Brett
 '''
+
 from deck.deck import Card
-from layout.layout import Layouts
 
 class Command(object):
-    '''
-    classdocs
-    '''
+    '''Requests user input and validation of user commands'''
 
 
     def __init__(self, command_str, curr_layouts):
-        '''
-        Constructor
-        '''
+        '''Provides validation of user commands'''
 
         print("Creating command from input: {}".format(command_str))
 
@@ -28,8 +24,7 @@ class Command(object):
 
     @classmethod
     def get_user_command(cls, curr_layouts):
-        '''
-        '''
+        '''Requests user input'''
 
         # Print command request
         print("Please enter next move: (format: <rank><suit>L<layout_id>)")
@@ -45,7 +40,7 @@ class Command(object):
             
 
     def is_valid(self, player_hand):
-        '''
-        '''
+        '''Performs validation of user commands'''
+
         return self.card.in_list(self.layout.valid_cards) and self.card.in_list(player_hand)
     

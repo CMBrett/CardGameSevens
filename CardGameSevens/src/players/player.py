@@ -4,7 +4,7 @@ Created on 9 Jun 2020
 @author: Chris
 '''
 from prettytable import PrettyTable
-from deck.deck import SUITS
+from deck.deck import SUITS, CARD_VALS
 from utility import utility
 
 class Player(object):
@@ -87,16 +87,10 @@ class Player(object):
     def card_val(self, ranks):
         '''
         '''
-        card_vals = {
-            11: "J",
-            12: "Q",
-            13: "K",
-            14: "A"
-            }
         
         for i, r in enumerate(ranks):
             if r > 10:
-                ranks[i] = card_vals[r]
+                ranks[i] = CARD_VALS[r]
                  
         return ranks
         
