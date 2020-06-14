@@ -41,14 +41,14 @@ class Card(object):
         
         return cls(int(rank), suit)
 
-    def _get_rank_from_user_cmd(self, rank_str):
+    @staticmethod
+    def _get_rank_from_user_cmd(rank_str):
         '''Converts any letter representation of a card rank into a numerical representation.'''
 
         if rank_str in CARD_VALS.values():
-            str(list(CARD_VALS.values()).index(rank_str))
+            return str(list(CARD_VALS.values()).index(rank_str))
         else:
-            rank_str
-        
+            return rank_str
 
     def in_list(self, lst):
         '''Check if card is in given list.'''

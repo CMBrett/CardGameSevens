@@ -11,11 +11,11 @@ from layout.layout import Layouts
 
 
 class TestCommand(unittest.TestCase):
-
+    '''This test class tests the functionality within the command package'''
 
     def test_valid_command(self):
-        '''
-        '''
+        '''This test ensures that a valid command is correctly checked'''
+
         deck = Deck(1)
         player_1 = Player(0)
         player_2 = Player(1)
@@ -41,7 +41,7 @@ class TestCommand(unittest.TestCase):
         cmd_str = card_cmd_str + layout_cmd_str
 
         cmd = Command(cmd_str, layouts)
-        self.assertTrue(cmd.is_valid())
+        self.assertTrue(cmd.is_valid(player_1.hand))
 
 
 if __name__ == "__main__":
