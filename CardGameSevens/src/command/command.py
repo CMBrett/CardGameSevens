@@ -21,7 +21,9 @@ class Command(object):
 
         # Separate command string and pass to relevant constructor
         self.card = Card.create_from_user_cmd(command_str.split('L')[0])
-        self.layout = curr_layouts.get_layout_by_id(command_str.split('L')[1])
+        self.layout = curr_layouts.get_layout_by_id(int(command_str.split('L')[1]))
+        
+        print("Command created: card: {}, layout: {}".format(self.card, self.layout))
 
 
     @classmethod
@@ -37,14 +39,13 @@ class Command(object):
 
         try:
             return cls(user_input, curr_layouts)
-        except Exception:
+        except Exception as exc:
+            print(exc)
             cls.get_user_command(curr_layouts)
             
 
-    def is_valid(self):
+    def is_valid(self, player_hand):
         '''
         '''
-        if self.card in self.layout.valid_cards:
-            return True
-        else:
-            return False
+        return self.card.in_list(self.layout.valid_cards) and self.card.in_list(player_hand)
+    

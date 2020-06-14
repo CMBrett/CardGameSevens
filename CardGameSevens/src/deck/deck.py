@@ -33,7 +33,7 @@ class Card(object):
         '''
         
         # Determine rank if rank is double digit
-        if card_cmd_str[:2] != "10":
+        if len(card_cmd_str) == 3:
             rank = card_cmd_str[0:1]
             suit = card_cmd_str[2]
         else:
@@ -42,8 +42,31 @@ class Card(object):
         
         print("Creating card for command: {}, rank: {}, suit: {}".format(card_cmd_str, rank, suit))
         
-        return cls(rank, suit)
+        return cls(int(rank), suit)
     
+    def in_list(self, lst):
+        '''
+        '''
+        
+        for lst_card in lst:
+            rank_match = lst_card.rank == self.rank
+            suit_match = lst_card.suit == self.suit
+            if rank_match and suit_match:
+                return True
+        else:
+            return False
+    
+    def remove_from_list(self, lst):
+        '''
+        '''
+        for i, lst_card in enumerate(lst):
+            rank_match = lst_card.rank == self.rank
+            suit_match = lst_card.suit == self.suit
+            if rank_match and suit_match:
+                return lst.pop(i)
+        else:
+            return lst
+
 
 class Deck(object):
     '''
