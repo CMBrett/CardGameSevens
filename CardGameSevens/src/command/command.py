@@ -8,15 +8,13 @@ from deck.deck import Card
 
 PASS_CMD = "pass"
 
-class Command(object):
-    '''Requests user input and validation of user commands'''
 
+class Command:
+    '''Requests user input and validation of user commands'''
 
     def __init__(self, command_str, curr_layouts):
         '''Provides validation of user commands'''
 
-#         print("Creating command from input: {}".format(command_str))
-        
         self.pass_cmd = False
 
         if command_str == PASS_CMD:
@@ -26,13 +24,17 @@ class Command(object):
         else:
             # Separate command string and pass to relevant constructor
             self.card = Card.create_from_user_cmd(command_str.split('L')[0])
-            self.layout = curr_layouts.get_layout_by_id(int(command_str.split('L')[1]))
+            self.layout = curr_layouts.get_layout_by_id(
+                int(command_str.split('L')[1])
+                )
 
     def __str__(self):
         if self.pass_cmd:
-            return PASS_CMD
+            ret_str = PASS_CMD
         else:
-            return "Card '{}' to Layout '{}'".format(self.card, self.layout)
+            ret_str = "Card '{}' to Layout '{}'".format(self.card, self.layout)
+
+        return ret_str
 
     @classmethod
     def get_user_command(cls, curr_layouts):
@@ -49,8 +51,7 @@ class Command(object):
             return cls(user_input, curr_layouts)
         except Exception as exc:
             print(exc)
-#             cls.get_user_command(curr_layouts)
-    
+
     @classmethod
     def get_computer_command(cls, com_input, curr_layouts):
         '''Converts computer move into Command instance'''
@@ -65,9 +66,18 @@ class Command(object):
         elif self.layout is None:
             validity = False
         else:
-            card_in_layout_valid_cards = self.card.in_list(self.layout.calculate_valid_cards())
+
+            card_in_layout_valid_cards = self.card.in_list(
+                self.layout.calculate_valid_cards()
+                )
+
             card_in_player_hand = self.card.in_list(player_hand)
-            validity = (card_in_layout_valid_cards and card_in_player_hand) or self.pass_cmd
+
+            card_in_hand_and_layout = (
+                card_in_layout_valid_cards and card_in_player_hand
+                )
+
+            validity = card_in_hand_and_layout or self.pass_cmd
 
         if verbose:
             if validity:
@@ -76,4 +86,3 @@ class Command(object):
                 print("Command is invalid")
 
         return validity
-    

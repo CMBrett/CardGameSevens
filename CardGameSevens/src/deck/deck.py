@@ -8,29 +8,30 @@ import random
 from curses.ascii import isalpha
 
 SUITS = ["C", "D", "H", "S"]
-RANKS = [n for n in range(2, 15)]
+RANKS = list(range(2, 15))
 CARD_VALS = {11: "J", 12: "Q", 13: "K", 14: "A"}
 FACE_VALS = {"J": 11, "Q": 12, "K": 13, "A": 14}
 
-class Card(object):
+
+class Card():
     '''Represents a playing card'''
-    
+
     def __init__(self, rank, suit):
         '''Creates Card instance from given rank and suit'''
 
-        # Create named tuple instance 
+        # Create named tuple instance
         self.rank = rank
         self.suit = suit
-    
+
     def __repr__(self):
         '''Returns a printable representation of the object'''
 
         return "({}, {})".format(str(self.rank), str(self.suit))
-        
+
     @classmethod
     def create_from_user_cmd(cls, card_cmd_str):
         '''Creates a card instance based on user input string'''
-        
+
         # Determine rank if rank is double digit
         if len(card_cmd_str) == 3:
             rank = card_cmd_str[0:2]
@@ -42,21 +43,23 @@ class Card(object):
             else:
                 rank = card_cmd_str[0]
             suit = card_cmd_str[1]
-        
+
         return cls(int(rank), suit)
 
     @staticmethod
     def _get_rank_from_user_cmd(rank_str):
-        '''Converts any letter representation of a card rank into a numerical representation.'''
+        '''
+        Converts any letter representation of a card rank
+        into a numerical representation.
+        '''
 
         if rank_str in CARD_VALS.values():
-            return str(list(CARD_VALS.values()).index(rank_str))
-        else:
-            return rank_str
+            rank_str = str(list(CARD_VALS.values()).index(rank_str))
+        return rank_str
 
     def in_list(self, lst):
         '''Check if card is in given list.'''
-        
+
         for lst_card in lst:
             rank_match = lst_card.rank == self.rank
             suit_match = lst_card.suit == self.suit
@@ -64,7 +67,7 @@ class Card(object):
                 return True
         else:
             return False
-    
+
     def remove_from_list(self, lst):
         '''Removes card from given list'''
 
@@ -72,18 +75,18 @@ class Card(object):
             rank_match = lst_card.rank == self.rank
             suit_match = lst_card.suit == self.suit
             if rank_match and suit_match:
-                return lst.pop(i)
-        else:
-            return lst
+                lst.pop(i)
+        return lst
 
 
-class Deck(object):
+class Deck():
     '''Represents a deck of playing cards'''
 
     def __init__(self, deck_num=1):
         '''Creates game_deck dependent of number of decks used.'''
 
-        self.cards = [Card(r,s) for s in SUITS for r in RANKS] * deck_num
+        self.__i = 0
+        self.cards = [Card(r, s) for s in SUITS for r in RANKS] * deck_num
 
     def __iter__(self):
         self.__i = 0
@@ -93,7 +96,7 @@ class Deck(object):
         '''Shuffles the cards.'''
 
         random.shuffle(self.cards)
-    
+
     def deal(self, players):
         '''Deals cards to provides Players instance'''
 

@@ -8,11 +8,14 @@ from players.human import Human
 from players.computer import Computer
 
 
-class Players(object):
+class Players():
     '''Provides methods for operating on a list of Player instances'''
 
     def __init__(self, player_num, human_num, comp_levels):
-        '''Creates Human and computer players based on user input for game creation.'''
+        '''
+        Creates Human and computer players
+        based on user input for game creation.
+        '''
 
         # Create Human and Computer players accordingly
         self.players = [
@@ -35,9 +38,11 @@ class Players(object):
     def get_player_by_id(self, get_id):
         '''Returns player instance by id'''
 
+        matching_player = None
+
         # Return matching player instance
         for player in self.players:
             if player.player_id == get_id:
-                return player
-        else:
-            return None
+                matching_player = player
+
+        return matching_player

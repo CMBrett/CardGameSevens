@@ -6,6 +6,7 @@ Created on 9 Jun 2020
 from players.player import Player
 from command.command import Command
 
+
 class Human(Player):
     '''Provides user_input request for human player'''
 
@@ -14,8 +15,8 @@ class Human(Player):
 
         self.current_command = Command.get_user_command(curr_layouts)
 
-        if self.current_command.is_valid(self.hand):
-            return self.current_command
-        else:
+        # Check that command is valid
+        if not self.current_command.is_valid(self.hand):
             self.request_command(curr_layouts)
 
+        return self.current_command
