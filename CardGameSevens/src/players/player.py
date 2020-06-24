@@ -53,7 +53,9 @@ class Player():
         return ", ".join(player_string)
 
     def get_hand_table(self):
-        '''Provides table string for printing current cards in player's hand to cli'''
+        '''
+        Provides table string to print current cards in player's hand to cli.
+        '''
 
         # Create table and add headers
         table = PrettyTable()
@@ -71,14 +73,19 @@ class Player():
         spade_col = self.card_val(
             sorted([c.rank for c in self.hand if c.suit == "S"])
             )
+
+        # Group columns for preparing the table
         columns = [clubs_col, diamo_col, heart_col, spade_col]
 
+        # Retrieve longest list length to zero pad other columns
         longest_list_length = len(max(columns, key=len))
 
+        # Pad necessary columns and add column to table
         for i, col in enumerate(columns):
             if len(col) < longest_list_length:
                 columns[i] = utility.pad(col, "", longest_list_length)
-            table.add_column(SUITS[i], columns[i], align='c', valign='m')
+            table.add_column(SUITS[i], col, align='c', valign='m')
+
         return table.get_string()
 
     @staticmethod

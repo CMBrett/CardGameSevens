@@ -28,6 +28,14 @@ class Card():
 
         return "({}, {})".format(str(self.rank), str(self.suit))
 
+    def __eq__(self, other):
+        '''Defines object equality.'''
+
+        rank_match = self.rank == other.rank
+        suit_match = self.suit == other.suit
+
+        return rank_match and suit_match
+
     @classmethod
     def create_from_user_cmd(cls, card_cmd_str):
         '''Creates a card instance based on user input string'''
@@ -56,17 +64,6 @@ class Card():
         if rank_str in CARD_VALS.values():
             rank_str = str(list(CARD_VALS.values()).index(rank_str))
         return rank_str
-
-    def in_list(self, lst):
-        '''Check if card is in given list.'''
-
-        for lst_card in lst:
-            rank_match = lst_card.rank == self.rank
-            suit_match = lst_card.suit == self.suit
-            if rank_match and suit_match:
-                return True
-        else:
-            return False
 
     def remove_from_list(self, lst):
         '''Removes card from given list'''

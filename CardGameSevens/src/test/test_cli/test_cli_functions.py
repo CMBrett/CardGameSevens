@@ -4,7 +4,8 @@ Created on 11 Jun 2020
 @author: Christopher Brett
 '''
 import unittest
-from cli.cli_functions import Cli 
+from cli.cli_functions import Cli
+
 
 class MockInputFunction:
     def __init__(self, return_value=None):
@@ -21,25 +22,38 @@ class MockInputFunction:
     def __exit__(self, type, value, traceback):
         __builtins__['input'] = self._orig_input_fn
 
+
 class TestCliFunctions(unittest.TestCase):
-    '''This test class is for testing the cli_functionality in cli.cli_functions.'''
+    '''
+    This test class is for testing the cli_functionality
+    in cli.cli_functions.
+    '''
 
     def test_cli_correct_arguments(self):
-        '''This test ensures that the cli.create_game function does not raise any exceptions.'''
-        
+        '''
+        This test ensures that the cli.create_game
+        function does not raise any exceptions.
+        '''
+
         with MockInputFunction(return_value="2"):
             Cli().create_game()
-    
+
     def test_cli_zero_arguments(self):
-        '''This test ensures that the cli.create_game function does not raise any exceptions.'''
-        
+        '''
+        This test ensures that the cli.create_game function
+        does not raise any exceptions.
+        '''
+
         with MockInputFunction(return_value="0"):
             with self.assertRaises(RecursionError):
                 Cli().create_game()
-    
+
     def test_cli_eight_arguments(self):
-        '''This test ensures that the cli.create_game function does not raise any exceptions.'''
-        
+        '''
+        This test ensures that the cli.create_game function
+        does not raise any exceptions.
+        '''
+
         with MockInputFunction(return_value="8"):
             with self.assertRaises(RecursionError):
                 Cli().create_game()

@@ -48,7 +48,7 @@ class Computer(Player):
         # Check for possible moves
         for layout_id, valid_cards in layout_valid_cards:
             possible_moves = [
-                (layout_id, c) for c in valid_cards if c.in_list(self.hand)
+                (layout_id, c) for c in valid_cards if c in self.hand
                 ]
 
         # Make choice based on difficulty

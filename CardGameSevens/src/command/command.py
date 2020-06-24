@@ -67,12 +67,12 @@ class Command:
             validity = False
         else:
 
-            card_in_layout_valid_cards = self.card.in_list(
-                self.layout.calculate_valid_cards()
-                )
+            # Calculate valid cards for layout
+            layout_valid_cards = self.layout.calculate_valid_cards()
 
-            card_in_player_hand = self.card.in_list(player_hand)
-
+            # Perform checks whether card is in hand and specified layout
+            card_in_layout_valid_cards = self.card in layout_valid_cards
+            card_in_player_hand = self.card in player_hand
             card_in_hand_and_layout = (
                 card_in_layout_valid_cards and card_in_player_hand
                 )

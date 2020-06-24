@@ -90,38 +90,38 @@ class TestCommand(unittest.TestCase):
     def test_round_end(self):
         '''This test check that a winner is found'''
 
-        test_input = {'decks': 1, 'rounds': 2, 'players': 1, 'human players': 1, 'comp_levels': {}}
-        
+        test_input = {
+            'decks': 1,
+            'rounds': 2,
+            'players': 1,
+            'human players': 1,
+            'comp_levels': {}
+            }
+
         state = GameState(test_input)
-        
         state.start_new_round()
-        
+
         player_obj = state.players.get_player_by_id(state.current_player)
-        
-        player_obj.hand = [c for c in Deck(1)]
-        
+        player_obj.hand = Deck(1).cards
+
         state.print_round_state_to_cli()
-        
+
         test_cmd_strs_1 = [
             str(i) + s + "L" + str(suit_layout_dict[s])
-            for s in suit_layout_dict.keys() for i in range(7,15)
+            for s in suit_layout_dict.keys() for i in range(7, 15)
             ]
-        
+
         test_cmd_strs_2 = [
             str(i) + s + "L" + str(suit_layout_dict[s])
-            for s in suit_layout_dict.keys() for i in range(2,7)
+            for s in suit_layout_dict.keys() for i in range(2, 7)
             ]
-        
-        
+
         test_cmd_strs_2.reverse()
-        
         test_cmd_strs = test_cmd_strs_1 + test_cmd_strs_2
-        
-        
         test_commands = [Command(c, state.layouts) for c in test_cmd_strs]
-        
+
         player_obj = state.players.get_player_by_id(state.current_player)
-        
+
         while not state.check_round_winner():
             for test_command in test_commands:
                 state.current_command = test_command
@@ -129,7 +129,7 @@ class TestCommand(unittest.TestCase):
                 state.print_round_state_to_cli()
 
         state.start_new_round()
-        
+
         self.assertEqual(state.round_number, 2)
         self.assertEqual(state.dealer_id, 0)
 
@@ -139,7 +139,6 @@ class TestCommand(unittest.TestCase):
                 state.update()
                 state.print_round_state_to_cli()
 
-        
         print("Total rounds: ", state.total_rounds)
         print("round_number: ", state.round_number)
         self.assertTrue(state.check_game_end())
