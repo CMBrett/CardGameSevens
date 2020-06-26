@@ -62,6 +62,8 @@ class GameDriver():
 
         # Check if this was a winning move
         if self.game.check_round_winner():
-            print("Player '{}' is the Winner!".format(self.game.current_player))
+            print(
+                "Player '{}' is the Winner!".format(
+                    self.game.current_player))
         else:
             self.game.end_turn()

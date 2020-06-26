@@ -43,13 +43,13 @@ class Computer(Player):
         layout_valid_cards = [
             (i, layout.calculate_valid_cards())
             for i, layout in enumerate(self.current_layouts)
-            ]
+        ]
 
         # Check for possible moves
         for layout_id, valid_cards in layout_valid_cards:
             possible_moves = [
                 (layout_id, c) for c in valid_cards if c in self.hand
-                ]
+            ]
 
         # Make choice based on difficulty
         if self.level > 1:
@@ -81,7 +81,7 @@ class Computer(Player):
         for i, move in enumerate(moves):
             cards = move[1]
             seven_eight_nine_cards = [c for c in cards if c.rank in [6, 7, 8]]
-            remaining_card_len = (len(cards)-len(seven_eight_nine_cards))
+            remaining_card_len = (len(cards) - len(seven_eight_nine_cards))
 
             if len(seven_eight_nine_cards) != 0 and remaining_card_len != 0:
                 for card in seven_eight_nine_cards:
@@ -104,4 +104,4 @@ class Computer(Player):
             str(chosen_move[1].rank),
             chosen_move[1].suit,
             "L" + str(chosen_move[0])
-            ])
+        ])

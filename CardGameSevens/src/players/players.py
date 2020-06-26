@@ -21,7 +21,7 @@ class Players():
         self.players = [
             Human(i) if i < human_num else Computer(i, comp_levels[i])
             for i in range(player_num)
-            ]
+        ]
 
     def __len__(self):
         return len(self.players)

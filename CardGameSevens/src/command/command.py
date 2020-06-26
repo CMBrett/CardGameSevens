@@ -26,7 +26,7 @@ class Command:
             self.card = Card.create_from_user_cmd(command_str.split('L')[0])
             self.layout = curr_layouts.get_layout_by_id(
                 int(command_str.split('L')[1])
-                )
+            )
 
     def __str__(self):
         if self.pass_cmd:
@@ -75,7 +75,7 @@ class Command:
             card_in_player_hand = self.card in player_hand
             card_in_hand_and_layout = (
                 card_in_layout_valid_cards and card_in_player_hand
-                )
+            )
 
             validity = card_in_hand_and_layout or self.pass_cmd
 

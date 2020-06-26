@@ -33,7 +33,7 @@ class GameState():
             user_input["players"],
             user_input["human players"],
             user_input["comp_levels"]
-            )
+        )
 
     def start_new_round(self):
         '''Updates class variable to start a new round.'''
@@ -67,8 +67,8 @@ class GameState():
         print(
             "Player {}'s Turn ({})\n".format(
                 self.current_player, current_player_obj.__class__.__name__
-                )
             )
+        )
 
         # Request and validate command from the current player
         self.current_command = current_player_obj.request_command(self.layouts)
@@ -78,8 +78,8 @@ class GameState():
                 self.current_command,
                 current_player_obj.__class__.__name__,
                 self.current_player
-                )
             )
+        )
 
         # Skip update if command is a pass
         if not self.current_command.pass_cmd:
@@ -92,10 +92,12 @@ class GameState():
         # Remove card from current players hand
         self.current_command.card.remove_from_list(
             self.players.get_player_by_id(self.current_player).hand
-            )
+        )
 
         # Add card to Layout
-        layout = self.layouts.get_layout_by_id(self.current_command.layout.id)
+        layout = self.layouts.get_layout_by_id(
+            self.current_command.layout.layout_id
+        )
         layout.cards.append(self.current_command.card)
 
         # Update layout valid_cards
@@ -156,8 +158,10 @@ class GameState():
 
         # Print Player cards if human
         if isinstance(current_player_obj, Human):
-            print("Printing Human Player {} cards:".format(
-                current_player_obj.player_id)
+            print(
+                "Printing Human Player {} cards:".format(
+                    current_player_obj.player_id
+                )
             )
             print(current_player_obj.get_hand_table())
             print("")

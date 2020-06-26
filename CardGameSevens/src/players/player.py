@@ -63,16 +63,16 @@ class Player():
         # Add data of each layout to the table
         clubs_col = self.card_val(
             sorted([c.rank for c in self.hand if c.suit == "C"])
-            )
+        )
         diamo_col = self.card_val(
             sorted([c.rank for c in self.hand if c.suit == "D"])
-            )
+        )
         heart_col = self.card_val(
             sorted([c.rank for c in self.hand if c.suit == "H"])
-            )
+        )
         spade_col = self.card_val(
             sorted([c.rank for c in self.hand if c.suit == "S"])
-            )
+        )
 
         # Group columns for preparing the table
         columns = [clubs_col, diamo_col, heart_col, spade_col]

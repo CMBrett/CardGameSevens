@@ -35,7 +35,7 @@ class Instructions():
         PLAYER_NUM: int,
         HUMAN_NUM: int,
         COMP_LEVEL: int
-        }
+    }
 
     # Default_value for each possible instruction
     DEFAULT = {
@@ -44,7 +44,7 @@ class Instructions():
         PLAYER_NUM: 2,
         HUMAN_NUM: 1,
         COMP_LEVEL: 1
-        }
+    }
 
     # Min and Max Value for each input parameter
     VALUE = {
@@ -53,7 +53,7 @@ class Instructions():
         PLAYER_NUM: (1, 3),
         HUMAN_NUM: (1, 3),
         COMP_LEVEL: (1, 2)
-        }
+    }
 
     INSTRUCTION_STR = "Please enter an integer to determine the number of {} \
     for this game: (default={}, min={}, max={})"
@@ -65,20 +65,20 @@ class Instructions():
         DECK_NUM: INSTRUCTION_STR.format(
             DECK_NUM, DEFAULT[DECK_NUM],
             VALUE[DECK_NUM][0], VALUE[DECK_NUM][1]
-            ),
+        ),
         ROUND_NUM: INSTRUCTION_STR.format(
             ROUND_NUM, DEFAULT[ROUND_NUM],
             VALUE[ROUND_NUM][0], VALUE[ROUND_NUM][1]
-            ),
+        ),
         PLAYER_NUM: INSTRUCTION_STR.format(
             PLAYER_NUM, DEFAULT[PLAYER_NUM],
             VALUE[PLAYER_NUM][0], VALUE[PLAYER_NUM][1]
-            ),
+        ),
         HUMAN_NUM: INSTRUCTION_STR.format(
             HUMAN_NUM, DEFAULT[HUMAN_NUM],
             VALUE[HUMAN_NUM][0], VALUE[HUMAN_NUM][1]
-            ),
-        }
+        ),
+    }
 
     # Instructions to request when creating a game
     CREATE = [DECK_NUM, ROUND_NUM, PLAYER_NUM, HUMAN_NUM]
@@ -111,7 +111,7 @@ class Cli():
             Instructions.ROUND_NUM: (1, 3),
             Instructions.PLAYER_NUM: (1, 8),
             Instructions.HUMAN_NUM: (1, self.player_num)
-            }
+        }
 
         init()
 
@@ -161,9 +161,11 @@ class Cli():
 
         if self.current_input == "":
             self.current_input = Instructions.DEFAULT[self.instruction]
-            self.info("'{}' set to default value: '{}'".format(
-                self.instruction, self.current_input)
-            )
+            self.info(
+                "'{}' set to default value: '{}'".format(
+                    self.instruction, self.current_input
+                    )
+                )
 
         # Store input if type + value check are successful else rerequest input
         if self.check_input_type() and self.check_input_value():
@@ -172,7 +174,7 @@ class Cli():
             self.error(
                 "Invalid input: Please enter a value for {} \
                 as an integer.".format(self.instruction)
-                )
+            )
             self.request_user_input()
 
     def request_comp_levels(self, comp_id):
@@ -188,8 +190,8 @@ class Cli():
                 Instructions.DEFAULT[Instructions.COMP_LEVEL],
                 Instructions.VALUE[Instructions.COMP_LEVEL][0],
                 Instructions.VALUE[Instructions.COMP_LEVEL][1]
-                    )
             )
+        )
 
         # Await user input
         self.current_input = input()
@@ -199,7 +201,7 @@ class Cli():
             self.current_input = Instructions.DEFAULT[Instructions.COMP_LEVEL]
             self.info("'{}' set to default value: '{}'".format(
                 self.instruction, self.current_input
-                ))
+            ))
 
         # Create dict entry in input dict for the computer levels
         self.input["comp_levels"] = {}
@@ -227,15 +229,15 @@ class Cli():
         # Create list of instruction strings for user input
         self.comp_instr_str = [
             Instructions.COMP_LEVEL_STR.format(
-                    Instructions.COMP_LEVEL, i,
-                    Instructions.DEFAULT[Instructions.COMP_LEVEL],
-                    Instructions.VALUE[Instructions.COMP_LEVEL][0],
-                    Instructions.VALUE[Instructions.COMP_LEVEL][1]
-                    )
+                Instructions.COMP_LEVEL, i,
+                Instructions.DEFAULT[Instructions.COMP_LEVEL],
+                Instructions.VALUE[Instructions.COMP_LEVEL][0],
+                Instructions.VALUE[Instructions.COMP_LEVEL][1]
+            )
             for i in range(
                 starting_com_index, starting_com_index + computer_num
-                )
-            ]
+            )
+        ]
 
     def check_input_type(self):
         '''Checks string input can be cast to correct data type.'''
@@ -244,7 +246,7 @@ class Cli():
             # Check provided input can be cast to intended data type
             self.proc_input = Instructions.DATA_TYPE[self.instruction](
                 self.current_input
-                )
+            )
         except ValueError:
             return False
         else:
@@ -275,11 +277,13 @@ class Cli():
         '''
 
         if comp_id is None:
-            # Add processed input to input dict using the instruction as the key
+            # Add processed input to input dict using the instruction as the
+            # key
             self.input[self.instruction] = self.proc_input
         else:
             # Add processed input to comp_levels entry of input dict
-            self.input["comp_levels"][comp_id + self.human_num] = self.proc_input
+            self.input["comp_levels"][comp_id +
+                                      self.human_num] = self.proc_input
 
     @staticmethod
     def info(output_str):

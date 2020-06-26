@@ -10,7 +10,8 @@ from command.command import Command
 from layout.layout import Layouts
 from game_state.game_state import GameState
 
-suit_layout_dict = {"C": 0,"D": 1,"H": 2,"S": 3} 
+suit_layout_dict = {"C": 0, "D": 1, "H": 2, "S": 3}
+
 
 class TestCommand(unittest.TestCase):
     '''This test class tests the functionality within the command package'''
@@ -28,36 +29,42 @@ class TestCommand(unittest.TestCase):
         deck.shuffle()
         deck.deal(players)
 
-        seven_suits = [c.suit for c in player_1.hand if c.rank==7]
+        seven_suits = [c.suit for c in player_1.hand if c.rank == 7]
         test_suit = seven_suits[0]
         card_cmd_str = "7" + test_suit
-        
+
         layout_dict = {
             "C": "L0",
             "D": "L1",
             "H": "L2",
             "S": "L3"
-            }
-        
+        }
+
         layout_cmd_str = layout_dict[test_suit]
         cmd_str = card_cmd_str + layout_cmd_str
 
         cmd = Command(cmd_str, layouts)
         self.assertTrue(cmd.is_valid(player_1.hand))
-    
+
     def test_card_ten(self):
         '''This test check that a card can be played with a double digit rank'''
-       
-        test_input = {'decks': 1, 'rounds': 1, 'players': 1, 'human players': 1, 'comp_levels': {}}
-        
+
+        test_input = {
+            'decks': 1,
+            'rounds': 1,
+            'players': 1,
+            'human players': 1,
+            'comp_levels': {}
+        }
+
         state = GameState(test_input)
-        
+
         state.start_new_round()
-        
+
         player_obj = state.players.get_player_by_id(state.current_player)
-        
+
         player_obj.hand = [c for c in Deck(1)]
-        
+
         state.print_round_state_to_cli()
 
         test_commands = []
@@ -75,13 +82,13 @@ class TestCommand(unittest.TestCase):
         test_commands.append(Command("4CL0", state.layouts))
         test_commands.append(Command("3CL0", state.layouts))
         test_commands.append(Command("2CL0", state.layouts))
-        
+
         for test_command in test_commands:
             state.current_command = test_command
             state.update()
-        
+
         state.print_round_state_to_cli()
-        
+
         extra_command = Command("7HL2", state.layouts)
         state.current_command = extra_command
         state.update()
@@ -96,7 +103,7 @@ class TestCommand(unittest.TestCase):
             'players': 1,
             'human players': 1,
             'comp_levels': {}
-            }
+        }
 
         state = GameState(test_input)
         state.start_new_round()
@@ -109,12 +116,12 @@ class TestCommand(unittest.TestCase):
         test_cmd_strs_1 = [
             str(i) + s + "L" + str(suit_layout_dict[s])
             for s in suit_layout_dict.keys() for i in range(7, 15)
-            ]
+        ]
 
         test_cmd_strs_2 = [
             str(i) + s + "L" + str(suit_layout_dict[s])
             for s in suit_layout_dict.keys() for i in range(2, 7)
-            ]
+        ]
 
         test_cmd_strs_2.reverse()
         test_cmd_strs = test_cmd_strs_1 + test_cmd_strs_2
